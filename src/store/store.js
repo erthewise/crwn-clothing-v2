@@ -14,18 +14,18 @@ import logger from 'redux-logger'
 import storage from 'redux-persist/lib/storage'
 
 import userReducer from './user/userSlice';
-import categoriesReducer from './categories/categoriesSlice';
+import categoryReducer from './categories/categorySlice';
 import cartReducer from './cart/cartSlice';
 
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['user']
+  whitelist: ['cart']
 }
 
 const rootReducer = combineReducers({
   user: userReducer,
-  categories: categoriesReducer,
+  category: categoryReducer,
   cart: cartReducer
 })
 
