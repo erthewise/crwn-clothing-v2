@@ -4,6 +4,7 @@ import { Routes, Route, } from "react-router-dom";
 
 import { onAuthStateChangedListener, createUserDocumentFromAuth } from './utils/firebase/firebase.utils';
 import { setCurrentUser } from "./store/user/userSlice";
+import { calculateCartTotals } from "./store/cart/cartSlice";
 import Navigation from "./routes/navigation/navigation.component";
 import Home from "./routes/home/home.component";
 import Authentication from "./routes/authentication/authentication.component";
@@ -12,6 +13,7 @@ import Checkout from "./routes/checkout/checkout.component";
 
 const App = () => {
   const dispatch = useDispatch();
+  const { cartItems } = useSelector((state) => state.cart);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChangedListener((user) => {
@@ -22,6 +24,11 @@ const App = () => {
     })
     return unsubscribe;
   }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(calculateCartTotals());
+    //eslint-disable-next-line
+  }, [cartItems]);
 
   return (
     <Routes>
