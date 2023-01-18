@@ -1,15 +1,21 @@
-import { compose, applyMiddleware, combineReducers } from 'redux';
+import { combineReducers } from 'redux';
 import { configureStore } from '@reduxjs/toolkit';
-import { persistReducer, persistStore } from 'redux-persist';
+import { 
+  persistReducer, 
+  persistStore,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+} from 'redux-persist';
+import logger from 'redux-logger'
 import storage from 'redux-persist/lib/storage'
 
 import userReducer from './user/userSlice';
 import categoriesReducer from './categories/categoriesSlice';
 import cartReducer from './cart/cartSlice';
-
-const middleWares = [];
-
-const composedEnhancers = compose(applyMiddleware(...middleWares));
 
 const persistConfig = {
   key: 'root',
@@ -27,7 +33,12 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
-  enhancers: composedEnhancers
+  middleware: (getDefaultMiddleware) => 
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      }})
+    .concat(logger),
 })
 
 export const persistor = persistStore(store);
