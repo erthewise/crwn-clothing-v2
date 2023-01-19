@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import { BUTTON_TYPE_CLASSES } from "../button/button.component";
 import { PaymentFormContainer, FormContainer, PaymentButton } from "./payment-form.styles.jsx";
@@ -8,9 +9,14 @@ import { PaymentFormContainer, FormContainer, PaymentButton } from "./payment-fo
 const PaymentForm = () => {
   const stripe = useStripe();
   const elements = useElements();
+  const navigate = useNavigate();
   const cartAmount = useSelector((state) => state.cart.totalAmount);
   const currentUser = useSelector((state) => state.user.currentUser);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+
+  const goToOrderConfirmationPage = () => {
+    navigate('/order_success')
+  }
 
   const paymentHandler = async (e) => {
     e.preventDefault();
@@ -47,7 +53,7 @@ const PaymentForm = () => {
       alert(paymentResult.error.message);
     } else {
       if (paymentResult.paymentIntent.status === 'succeeded') {
-        alert('Payment Successful');
+        navigate('/order_success');
       }
     }
   }
