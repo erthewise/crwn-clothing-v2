@@ -30,6 +30,4 @@ const categorySlice = createSlice({
   }
 })
 
-// export const { setCategoriesMap } = categorySlice.actions
-
 export default categorySlice.reducer
