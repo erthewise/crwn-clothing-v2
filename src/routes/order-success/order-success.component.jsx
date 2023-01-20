@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -9,6 +10,10 @@ const OrderSuccess = () => {
   const { cartItems, totalAmount } = useSelector((state) => state.cart);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   const goBackToShop = () => {
     dispatch(resetCart());
